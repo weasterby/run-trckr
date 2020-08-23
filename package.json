@@ -4,7 +4,7 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "build": "cd client && yarn && yarn build",
+    "build": "cd client && npm install && npm run-script build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node App.js"
   },
