@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS challenges(
     contest INT NOT NULL,
     active BOOLEAN NOT NULL,
     name VARCHAR(120) NOT NULL,
+    description TEXT,
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
     awards JSONB,
@@ -144,13 +145,3 @@ CREATE TABLE IF NOT EXISTS user_challenges(
       ON UPDATE cascade
       ON DELETE cascade
 );
-
-
-INSERT INTO users(id, name) VALUES (1, 'test')
-ON CONFLICT (id) DO UPDATE
-SET updated = (NOW() AT TIME ZONE 'utc')
-RETURNING id, name, completed;
-
-SELECT contest.group_id, contest.contest_id, contest.name, contest.group_name, contest.description, "user".role FROM
-contests AS contest INNER JOIN user_contests AS "user" on contest.group_id = "user"."group" and contest.contest_id = "user".contest
-WHERE "user"."user" = 64124462;

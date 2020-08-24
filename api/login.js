@@ -1,7 +1,6 @@
 const passport = require('passport');
 const StravaStrategy = require('passport-strava-oauth2').Strategy;
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 module.exports = function(app) {
@@ -34,7 +33,6 @@ module.exports = function(app) {
         }
     ));
 
-    //app.use(cookieParser());
     app.use(bodyParser.json());
 
     app.use(session({
@@ -54,7 +52,7 @@ module.exports = function(app) {
         passport.authenticate('strava', { failureRedirect: '/login' }),
         function(req, res) {
             // Successful authentication, redirect home.
-            res.redirect('/');
+            res.redirect('/leaderboard');
         });
 
 };
