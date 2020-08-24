@@ -5,6 +5,10 @@ import '../Styles/Welcome.css'
 
 class Welcome extends Component {
 
+    componentDidMount() {
+        document.body.style.background = "#BF5700"
+    }
+
     render() {
         return (
             <div>
