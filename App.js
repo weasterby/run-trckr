@@ -6,8 +6,8 @@ const path = require('path');
 
 app.use(express.static(path.join(__dirname, "/client/build")));
 
-require('./client/router')(app);
 require('./api/router')(app);
+require('./client/router')(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
