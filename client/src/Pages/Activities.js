@@ -10,48 +10,6 @@ class Activities extends Component {
         document.body.style.background = "#ffffff"
     }
 
-    sortDuration = (a, b, order) => {
-        var b_hours = 0
-        var b_minutes = 0
-        var b_seconds = 0
-        var a_hours = 0
-        var a_minutes = 0
-        var a_seconds = 0
-
-        if (b.split(":").length === 3) {
-            b_hours = parseInt(b.split(":")[0])
-            b_minutes = parseInt(b.split(":")[1])
-            b_seconds = parseInt(b.split(":")[2])
-        } else {
-            b_minutes = parseInt(b.split(":")[0])
-            b_seconds = parseInt(b.split(":")[1])
-        }
-        if (a.split(":").length === 3) {
-            a_hours = parseInt(a.split(":")[0])
-            a_minutes = parseInt(a.split(":")[1])
-            a_seconds = parseInt(a.split(":")[2])
-        } else {
-            a_minutes = parseInt(a.split(":")[0])
-            a_seconds = parseInt(a.split(":")[1])
-        }
-
-        if (order === 'asc') {
-            return (b_hours - a_hours) || (b_minutes - a_minutes) || (b_seconds - a_seconds)
-        } else {
-            return (a_hours - b_hours) || (a_minutes - b_minutes) || (a_seconds - b_seconds)
-        }
-
-    }
-
-    sortPace = (a, b, order) => {
-        let b_minutes = parseInt(b.split(":")[0])
-        let b_seconds = parseInt(b.split(":")[1].substring(0,2))
-        let a_minutes = parseInt(a.split(":")[0])
-        let a_seconds = parseInt(a.split(":")[1].substring(0,2))
-
-        return order === 'asc' ? (b_minutes - a_minutes || b_seconds - a_seconds) : (a_minutes - b_minutes || a_seconds - b_seconds)
-    }
-
     render() {
 
         const columns = [
@@ -70,34 +28,22 @@ class Activities extends Component {
             {
                 dataField: "distance",
                 text: "Distance (Mi)",
-                sort: true,
-                sortFunc: (a, b, order) => {
-                    return order === 'asc' ? b - a : a - b
-                }
+                sort: true
             },
             {
                 dataField: "moving_time",
                 text: "Moving Time",
-                sort: true,
-                sortFunc: (a, b, order) => {
-                    return this.sortDuration(a, b, order)
-                }
+                sort: true
             },
             {
                 dataField: "pace",
                 text: "Pace",
-                sort: true,
-                sortFunc: (a, b, order) => {
-                    return this.sortPace(a, b, order)
-                }
+                sort: true
             },
             {
                 dataField: "total_elevation_gain",
                 text: "Elevation Gain (Ft)",
-                sort: true,
-                sortFunc: (a, b, order) => {
-                    return order === 'asc' ? b - a : a - b
-                }
+                sort: true
             },
             {
                 dataField: "type",
