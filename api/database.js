@@ -77,3 +77,36 @@ module.exports.getUserGroups = async function(id) {
     else
         return {};
 };
+
+module.exports.updateUser = async function(id, data) {
+    let queryString = "UPDATE users SET ";
+    const keys = Object.keys(data);
+    let values = Object.values(data);
+    values.push(id);
+    let i;
+    for(i = 0; i < keys.length; i++) {
+        queryString += keys[i] + " = $" + (i+1) + ", ";
+    }
+    queryString += "completed = true, updated = (NOW() AT TIME ZONE 'utc') WHERE id = $" + (i+1);
+    console.debug(queryString);
+    console.debug("with values");
+    console.debug(values);
+
+    const client = await pool.connect();
+    await client.query("BEGIN;");
+    try {
+        await client.query(queryString, values);
+        await client.query("COMMIT;");
+    }
+    catch (e) {
+        console.error(e);
+        await client.query("ROLLBACK;");
+        throw(e);
+    }
+    finally {
+        client.release();
+    }
+
+    return true;
+
+};

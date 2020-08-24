@@ -19,9 +19,26 @@ module.exports = function (app) {
     });
 
     app.put("/api/user", async function (req, res) {
-        console.log(req.body);
-        console.log(jsonValidator.validate("userUpdate", req.body));
-        res.send();
+        try {
+            const id = req.user.id;
+            if (id !== undefined) {
+                if (jsonValidator.validate("userUpdate", req.body)) {
+                    await database.updateUser(id, req.body);
+                    res.send({success: true, data: null});
+                } else {
+                    res.status(400);
+                    res.send({success: false, message: "Invalid data"});
+                }
+                res.send();
+            } else {
+                res.status(401);
+                res.send({success: false, message: "User not found"});
+            }
+        } catch (e) {
+            res.status(500);
+            res.send({success: false, message: "Unknown error"});
+        }
+
     });
 
     app.get("/api/user/groups", async function (req, res) {

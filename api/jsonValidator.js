@@ -10,7 +10,7 @@ const userUpdateSchema = {
         "user_consent": {"type": "boolean"}
     },
     "additionalProperties": false,
-    "require": ["name", "email"]
+    "required": ["name", "email"]
 };
 
 module.exports = function () {
