@@ -28,10 +28,7 @@ class Activities extends Component {
             {
                 dataField: "distance",
                 text: "Distance (Mi)",
-                sort: true,
-                sortFunc: (a, b, order) => {
-                    return order === 'asc' ? b - a : a - b
-                }
+                sort: true
             },
             {
                 dataField: "moving_time",
