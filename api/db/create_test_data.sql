@@ -13,7 +13,7 @@ INSERT INTO user_contests("user", "group", contest, active) VALUES (3, 1, 1, tru
 
 INSERT INTO activities(id, "user", name, description, distance, distance_mi, distance_km, moving_time, elapsed_time,total_elevation_gain, elev_high,
                        elev_low, type, start_date, start_date_local, timezone, workout_type, average_speed, max_speed, max_pace_standard, average_pace_standard)
-VALUES (1, 64124462, 'Activity 1', '', 5000, 3.125, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
+VALUES (10, 64124462, 'Activity 1', '', 5000, 3.13, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
         'CST', 1, 4.1693, 4.1693, 6.4333, 6.4333) ON CONFLICT DO NOTHING;
 INSERT INTO contest_activities("user", "group", contest, activity) VALUES (64124462, 1, 1, 1) ON CONFLICT DO NOTHING;
 
@@ -31,7 +31,7 @@ INSERT INTO contest_activities("user", "group", contest, activity) VALUES (64124
 
 INSERT INTO activities(id, "user", name, description, distance, distance_mi, distance_km, moving_time, elapsed_time,total_elevation_gain, elev_high,
                        elev_low, type, start_date, start_date_local, timezone, workout_type, average_speed, max_speed, max_pace_standard, average_pace_standard)
-VALUES (4, 1, 'Activity 4', '', 5000, 3.125, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
+VALUES (4, 1, 'Activity 4', '', 5000, 3.13, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
         'CST', 1, 4.1693, 4.1693, 6.4333, 6.4333) ON CONFLICT DO NOTHING;
 INSERT INTO contest_activities("user", "group", contest, activity) VALUES (1, 1, 1, 4) ON CONFLICT DO NOTHING;
 
@@ -49,7 +49,7 @@ INSERT INTO contest_activities("user", "group", contest, activity) VALUES (1, 1,
 
 INSERT INTO activities(id, "user", name, description, distance, distance_mi, distance_km, moving_time, elapsed_time,total_elevation_gain, elev_high,
                        elev_low, type, start_date, start_date_local, timezone, workout_type, average_speed, max_speed, max_pace_standard, average_pace_standard)
-VALUES (7, 2, 'Activity 7', '', 5000, 3.125, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
+VALUES (7, 2, 'Activity 7', '', 5000, 3.13, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
         'CST', 1, 4.1693, 4.1693, 6.4333, 6.4333) ON CONFLICT DO NOTHING;
 INSERT INTO contest_activities("user", "group", contest, activity) VALUES (2, 1, 1, 7) ON CONFLICT DO NOTHING;
 
@@ -67,7 +67,7 @@ INSERT INTO contest_activities("user", "group", contest, activity) VALUES (2, 1,
 
 INSERT INTO activities(id, "user", name, description, distance, distance_mi, distance_km, moving_time, elapsed_time,total_elevation_gain, elev_high,
                        elev_low, type, start_date, start_date_local, timezone, workout_type, average_speed, max_speed, max_pace_standard, average_pace_standard)
-VALUES (10, 3, 'Activity 10', '', 5000, 3.125, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
+VALUES (10, 3, 'Activity 10', '', 5000, 3.13, 5, 1200, 1500, 100, 100, 0, 'Running', '2020-08-24T08:00:00Z', '2020-08-24T08:00:00Z',
         'CST', 1, 4.1693, 4.1693, 6.4333, 6.4333) ON CONFLICT DO NOTHING;
 INSERT INTO contest_activities("user", "group", contest, activity) VALUES (3, 1, 1, 10) ON CONFLICT DO NOTHING;
 
