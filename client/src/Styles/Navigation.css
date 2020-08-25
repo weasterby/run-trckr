@@ -1,0 +1,28 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+.color-nav {
+    background-color: #BF5700;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+}
+
+.logo-button {
+    margin-right: 7px;
+    margin-bottom: 4px;
+}
+
+.nav-brand {
+    color: white;
+    font-family: 'Open Sans', serif;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.nav-item {
+    color: white;
+    font-family: 'Open Sans', serif;
+    font-size: 22px;
+    font-weight: 600;
+}
