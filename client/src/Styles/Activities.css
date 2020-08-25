@@ -1,4 +1,4 @@
-.week-dropdown {
+.activities-dropdown {
     margin-left: 20px;
     margin-top: 20px;
     margin-bottom: 5px;
@@ -7,4 +7,32 @@
 
 .activities-table {
     margin: 20px;
+}
+
+.caret {
+display: inline-block;
+width: 0;
+height: 0;
+margin-left: 2px;
+vertical-align: middle;
+border-top: 4px dashed;
+border-top: 4px solid \9;
+border-right: 4px solid transparent;
+border-left: 4px solid transparent;
+}
+
+.dropup .caret, .navbar-fixed-bottom .dropdown .caret {
+border-top: 0;
+border-bottom: 4px dashed;
+border-bottom: 4px solid \9;
+content: "";
+}
+
+.header-class > th:hover {
+    cursor: pointer;
+    background-color: #e8be9b;
+}
+
+.row-class {
+    cursor: pointer;
 }
