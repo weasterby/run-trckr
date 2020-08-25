@@ -49,8 +49,11 @@ CREATE TABLE IF NOT EXISTS user_contests(
         ON DELETE cascade,
     FOREIGN KEY ("group", contest) REFERENCES contests(group_id, contest_id)
         ON UPDATE cascade
-        ON DELETE cascade
+        ON DELETE cascade,
+    UNIQUE (contest, "group", "user")
 );
+CREATE INDEX IF NOT EXISTS user_contests_user_index ON user_contests("user");
+CREATE INDEX IF NOT EXISTS user_contests_contest_index ON user_contests(contest, "group");
 
 CREATE TABLE IF NOT EXISTS activities(
     id BIGINT PRIMARY KEY,
@@ -81,6 +84,10 @@ CREATE TABLE IF NOT EXISTS activities(
     workout_type INT,
     average_speed DOUBLE PRECISION,
     max_speed DOUBLE PRECISION,
+    average_pace_standard DECIMAL(4, 4),
+    max_pace_standard DECIMAL(4, 4),
+    average_pace_metric DECIMAL(4, 4),
+    max_pace_metric DECIMAL(4, 4),
     photos JSONB,
     segment_count INT,
     other JSONB,
@@ -90,6 +97,8 @@ CREATE TABLE IF NOT EXISTS activities(
         ON UPDATE cascade
         ON DELETE cascade
 );
+CREATE INDEX IF NOT EXISTS activities_start_date_local_index ON activities(start_date_local);
+CREATE INDEX IF NOT EXISTS activities_user_index ON activities("user");
 
 CREATE TABLE IF NOT EXISTS contest_activities(
     id BIGSERIAL PRIMARY KEY,
@@ -105,8 +114,11 @@ CREATE TABLE IF NOT EXISTS contest_activities(
         ON DELETE cascade,
     FOREIGN KEY (activity) REFERENCES activities(id)
         ON UPDATE cascade
-        ON DELETE cascade
+        ON DELETE cascade,
+    UNIQUE (activity, contest, "group")
 );
+CREATE INDEX IF NOT EXISTS contest_activities_contest_user_index ON contest_activities(contest, "group", "user");
+CREATE INDEX IF NOT EXISTS contest_activities_activity ON contest_activities(activity);
 
 CREATE TABLE IF NOT EXISTS challenges(
     id SERIAL PRIMARY KEY,
@@ -120,6 +132,7 @@ CREATE TABLE IF NOT EXISTS challenges(
     awards JSONB,
     default_award INT
 );
+CREATE INDEX IF NOT EXISTS challenges_contest_index ON challenges(contest, "group");
 
 CREATE TABLE IF NOT EXISTS user_challenges(
     id BIGSERIAL PRIMARY KEY,
@@ -141,5 +154,8 @@ CREATE TABLE IF NOT EXISTS user_challenges(
       ON DELETE cascade,
     FOREIGN KEY (challenge) REFERENCES challenges(id)
       ON UPDATE cascade
-      ON DELETE cascade
+      ON DELETE cascade,
+    UNIQUE ("user", challenge)
 );
+CREATE INDEX IF NOT EXISTS user_challenges_contest_user_index ON user_challenges(contest, "group", "user");
+CREATE INDEX IF NOT EXISTS user_challenges_active_contest_index ON user_challenges(activity, contest, "group");

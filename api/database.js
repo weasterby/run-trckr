@@ -142,8 +142,9 @@ module.exports.getGroupActivities = async function(group_id, contest_id) {
     await client.query("BEGIN;");
     let results;
     try {
-        results = await client.query("SELECT activity.name, activity.start_date_local, activity.distance," +
-            "activity.moving_time, activity.average_speed, activity.total_elevation_gain, activity.type, \"user\".name AS athlete FROM\n" +
+        results = await client.query("SELECT activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
+            "activity.distance, activity.distance_mi, activity.distance_km, activity.moving_time, activity.elapsed_time," +
+            "activity.average_speed, activity.total_elevation_gain, activity.type, activity.average_pace_standard, \"user\".name AS athlete FROM\n" +
             "contest_activities AS contest\n" +
             "LEFT JOIN activities AS activity\n" +
             "ON contest.activity = activity.id\n" +
@@ -172,8 +173,9 @@ module.exports.getMyGroupActivities = async function(group_id, contest_id, user_
     await client.query("BEGIN;");
     let results;
     try {
-        results = await client.query("SELECT activity.name, activity.start_date_local, activity.distance," +
-            "activity.moving_time, activity.average_speed, activity.total_elevation_gain, activity.type, \"user\".name AS athlete FROM\n" +
+        results = await client.query("SELECT activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
+            "activity.distance, activity.distance_mi, activity.distance_km, activity.moving_time, activity.elapsed_time," +
+            "activity.average_speed, activity.total_elevation_gain, activity.type, activity.average_pace_standard, \"user\".name AS athlete FROM\n" +
             "contest_activities AS contest\n" +
             "LEFT JOIN activities AS activity\n" +
             "ON contest.activity = activity.id\n" +
