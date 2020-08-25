@@ -5,12 +5,30 @@ import Navigation from '../Components/Navigation'
 import '../Styles/Activities.css'
 
 class Activities extends Component {
+    
+    constructor() {
+        super();
+
+        this.state = {
+            selectedActivitiesId: 0,
+            unselectedActivitiesId: 1,
+        }
+      }
+    
+      changeValue(selected) {
+            this.setState({
+                selectedActivitiesId: this.state.unselectedActivitiesId,
+                unselectedActivitiesId: selected
+            })
+      }
 
     componentDidMount() {
         document.body.style.background = "#ffffff"
     }
 
     render() {
+        
+        const activities = ["All Activities", "My Activities"];
 
         const columns = [
             {
@@ -18,16 +36,23 @@ class Activities extends Component {
                 hidden: true
             },
             {
-                dataField: "name",
-                text: "Name"
+                dataField: "athlete",
+                text: "Athlete",
+                sort: true,
+            },
+            {
+                dataField: "title",
+                text: "Title",
+                sort: true,
             },
             {
                 dataField: "date",
-                text: "Date"
+                text: "Date",
+                sort: true,
             },
             {
                 dataField: "distance",
-                text: "Distance (Mi)",
+                text: "Distance (mi)",
                 sort: true
             },
             {
@@ -42,7 +67,7 @@ class Activities extends Component {
             },
             {
                 dataField: "total_elevation_gain",
-                text: "Elevation Gain (Ft)",
+                text: "Elevation Gain (ft)",
                 sort: true
             },
             {
@@ -51,17 +76,42 @@ class Activities extends Component {
                 sort: true
             }
         ]
+                  
+        const rowEvents = {
+          onClick: (e, row, rowIndex) => {
+            console.log("clicked" + e)
+            var activityId = 3942096872
+             window.open("https://www.strava.com/activities/" + activityId);
+          }
+        };
+        
+        const dummyData = [{
+                            title: "Such fast run",
+                            id: 4,
+                            date: 3,
+                            pace: 1,
+                        }, {
+                            title: "Felt kinda slow 2day",
+                            id: 2,
+                            date: 4,
+                            pace: 2,
+                        }]
 
         return (
             <div>
                 <Navigation />
-                <DropdownButton className="week-dropdown" title="Week">
+                <DropdownButton className="activities-dropdown" title= {activities[this.state.selectedActivitiesId]}>
+                    <Dropdown.Item onClick={() => this.changeValue(this.state.selectedActivitiesId)}> {activities[this.state.unselectedActivitiesId]} </Dropdown.Item>
                 </DropdownButton>
                 <div class="activities-table">
                     <BootstrapTable
                         keyField='rank'
-                        data={[]}
+                        data={dummyData}
                         columns={columns}
+                        hover
+                        headerClasses="header-class"
+                        rowClasses= "row-class"
+                        rowEvents={ rowEvents }
                     />
                 </div>
             </div>
