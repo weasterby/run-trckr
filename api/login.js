@@ -16,7 +16,7 @@ module.exports = function(app) {
     passport.use(new StravaStrategy({
             clientID: process.env.STRAVA_CLIENT_ID,
             clientSecret: process.env.STRAVA_CLIENT_SECRET,
-            callbackURL: "http://localhost:3000/login/callback"
+            callbackURL: "/login/callback"
         },
         function(accessToken, refreshToken, profile, done) {
             // asynchronous verification, for effect...
