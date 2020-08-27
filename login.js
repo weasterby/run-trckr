@@ -26,7 +26,7 @@ module.exports = function(app) {
                 // represent the logged-in user.  In a typical application, you would want
                 // to associate the Strava account with a user record in your database,
                 // and return that user instead.
-                user = await require('./database').createUser(profile);
+                user = await require('./backend/api/database').createUser(profile);
                 console.log(user);
                 return done(null, user);
             });

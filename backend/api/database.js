@@ -1,11 +1,8 @@
-const { Pool } = require('pg');
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: 10
-});
+const clientPool = require('../db/clientPool');
 
 module.exports.createUser = async function(profile){
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -22,7 +19,7 @@ module.exports.createUser = async function(profile){
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
 
     return {
@@ -36,7 +33,8 @@ module.exports.createUser = async function(profile){
 };
 
 module.exports.getRole = async function(user_id, group_id, contest_id) {
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -50,7 +48,7 @@ module.exports.getRole = async function(user_id, group_id, contest_id) {
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
     if (results !== undefined && results.rows.length > 0)
         return results.rows[0].role;
@@ -59,7 +57,8 @@ module.exports.getRole = async function(user_id, group_id, contest_id) {
 };
 
 module.exports.getUser = async function(id) {
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -72,7 +71,7 @@ module.exports.getUser = async function(id) {
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
     if (results !== undefined)
         return results.rows[0];
@@ -81,7 +80,8 @@ module.exports.getUser = async function(id) {
 };
 
 module.exports.getUserGroups = async function(id) {
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -96,7 +96,7 @@ module.exports.getUserGroups = async function(id) {
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
     if (results !== undefined)
         return results.rows;
@@ -118,7 +118,8 @@ module.exports.updateUser = async function(id, data) {
     console.debug("with values");
     console.debug(values);
 
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     try {
         await client.query(queryString, values);
@@ -130,7 +131,7 @@ module.exports.updateUser = async function(id, data) {
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
 
     return true;
@@ -138,7 +139,8 @@ module.exports.updateUser = async function(id, data) {
 };
 
 module.exports.getGroupActivities = async function(group_id, contest_id) {
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -160,7 +162,7 @@ module.exports.getGroupActivities = async function(group_id, contest_id) {
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
     if (results !== undefined)
         return results.rows;
@@ -169,7 +171,8 @@ module.exports.getGroupActivities = async function(group_id, contest_id) {
 };
 
 module.exports.getMyGroupActivities = async function(group_id, contest_id, user_id) {
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -191,7 +194,7 @@ module.exports.getMyGroupActivities = async function(group_id, contest_id, user_
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
     if (results !== undefined)
         return results.rows;
@@ -200,7 +203,8 @@ module.exports.getMyGroupActivities = async function(group_id, contest_id, user_
 };
 
 module.exports.getGroupLeaderBoard = async function(group_id, contest_id) {
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -218,7 +222,7 @@ module.exports.getGroupLeaderBoard = async function(group_id, contest_id) {
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
     if (results !== undefined)
         return results.rows;
@@ -227,7 +231,8 @@ module.exports.getGroupLeaderBoard = async function(group_id, contest_id) {
 };
 
 module.exports.getCurrentContests = async function(group_id, contest_id, timestamp) {
-    const client = await pool.connect();
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
     await client.query("BEGIN;");
     let results;
     try {
@@ -242,7 +247,7 @@ module.exports.getCurrentContests = async function(group_id, contest_id, timesta
         throw(e);
     }
     finally {
-        client.release();
+        foregroundClient.releaseClient();
     }
     if (results !== undefined)
         return results.rows;
