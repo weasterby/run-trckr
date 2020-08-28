@@ -3,6 +3,10 @@ import BootstrapTable from 'react-bootstrap-table-next'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import Navigation from '../Components/Navigation'
 import '../Styles/Activities.css'
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker } from 'react-dates';
+
 
 class Activities extends Component {
     
@@ -12,6 +16,9 @@ class Activities extends Component {
         this.state = {
             selectedActivitiesId: 0,
             unselectedActivitiesId: 1,
+            startDate: null,
+            endDate: null,
+            focusedInput: null,
         }
       }
     
@@ -103,6 +110,16 @@ class Activities extends Component {
                 <DropdownButton className="activities-dropdown" title= {activities[this.state.selectedActivitiesId]}>
                     <Dropdown.Item onClick={() => this.changeValue(this.state.selectedActivitiesId)}> {activities[this.state.unselectedActivitiesId]} </Dropdown.Item>
                 </DropdownButton>
+                <DateRangePicker
+                  startDate= {this.state.startDate}
+                  startDateId="startDate"
+                  endDate= {this.state.endDate}
+                  endDateId="endDate"
+                  onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} 
+                  focusedInput={this.state.focusedInput} 
+                  onFocusChange={focusedInput => this.setState({ focusedInput })} 
+                />
+
                 <div class="activities-table">
                     <BootstrapTable
                         keyField='rank'
