@@ -41,4 +41,9 @@ module.exports = function (app) {
             console.log(e);
         }
     });
+
+    app.get('/strava/*', function (req, res) {
+        res.status(404);
+        res.send('Resource not found')
+    });
 };

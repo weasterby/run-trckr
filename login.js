@@ -55,4 +55,9 @@ module.exports = function(app) {
             res.redirect('/leaderboard');
         });
 
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
+    })
+
 };
