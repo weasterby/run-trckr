@@ -3,8 +3,7 @@ const utils = require('./utils');
 const stravaApi = require('strava-v3');
 stravaApi.config({
    "client_id": process.env.STRAVA_CLIENT_ID,
-   "client_secret": process.env.STRAVA_CLIENT_SECRET,
-   "redirect_uri": process.env.HOST_NAME + "/strava/auth/callback"
+   "client_secret": process.env.STRAVA_CLIENT_SECRET
 });
 const webhooks = require('./webhooks');
 webhooks.setup(stravaApi, database);
@@ -13,6 +12,8 @@ const requiredScope = ["profile:read_all", "activity:read"];
 
 module.exports = function (app) {
     app.get("/strava/auth", function (req, res) {
+        const protocol = (req.secure) ? "https://" : "http://";
+        stravaApi.config({"redirect_uri": protocol + req.headers.host + "/strava/auth/callback"});
         res.redirect(stravaApi.oauth.getRequestAccessURL({"scope": requiredScope.join(","), "approval_prompt": "force"}));
     });
 
