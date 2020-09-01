@@ -8,10 +8,12 @@ const { Pool } = require('pg');
 const pools = {
     foreground: new Pool({
         connectionString: process.env.DATABASE_URL,
+        ssl: {rejectUnauthorized: false},
         max: maxConnections.foreground
     }),
     background: new Pool({
         connectionString: process.env.DATABASE_URL,
+        ssl: {rejectUnauthorized: false},
         max: maxConnections.background
     })
 };
