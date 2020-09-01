@@ -17,7 +17,7 @@ class Navigation extends Component {
                   <Nav className="ml-auto">
                     <Nav.Link className="nav-item" href="/leaderboard">Leaderboard</Nav.Link>
                     <Nav.Link className="nav-item" href="/activities">Activities</Nav.Link>
-                    <Nav.Link className="nav-item" href="/about">About</Nav.Link>
+                    <Nav.Link className="nav-item" href="/challenges">Challenges</Nav.Link>
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>
