@@ -171,7 +171,7 @@ module.exports.getUserContestsForDate = async function(id, date) {
         foregroundClient.releaseClient();
     }
 
-    if (results !== undefined && results.rows.length > 0)
+    if (results !== undefined)
         return results.rows;
 };
 

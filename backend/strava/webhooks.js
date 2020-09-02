@@ -1,6 +1,7 @@
 let stravaApi;
 let database;
 const utils = require('./utils');
+let webhookId;
 
 module.exports.setup = async function (newStravaApi, newDatabase) {
     stravaApi = newStravaApi;
@@ -16,45 +17,54 @@ module.exports.setup = async function (newStravaApi, newDatabase) {
             });
             if (newWebhook === undefined || newWebhook.id === undefined) {
                 console.error("Could not create webhook");
+            } else {
+                webhookId = newWebhook.id;
             }
         } else {
             console.log("Webhook already exists");
+            webhookId = currentWebhooks[0].id;
         }
+        console.debug("Webhook ID:", webhookId);
     }
 };
 
 module.exports.newEvent = async function (event) {
     console.debug("New webhook event:", event);
     try {
-        const athlete = event.owner_id;
-        const access_token = await utils.getAuthToken(athlete, stravaApi);
-        const strava = new stravaApi.client(access_token);
+        if (process.env.STRAVA_WEBHOOKS_ENABLED != "true" || event.subscription_id === webhookId) {
+            const athlete = event.owner_id;
+            const access_token = await utils.getAuthToken(athlete, stravaApi);
+            const strava = new stravaApi.client(access_token);
 
-        if (event.object_type === "activity") {
-            const activityId = event.object_id;
-            const eventType = event.aspect_type;
+            if (event.object_type === "activity") {
+                const activityId = event.object_id;
+                const eventType = event.aspect_type;
 
-            if (eventType === "create") {
-                database.createActivity(activityId, athlete);
-            }
-
-            if (eventType === "create" || eventType === "update") {
-                const activity = await strava.activities.get({id: activityId});
-                const start_date = await database.updateActivity(activityId, activity, true);
-
-                let group_ids = [];
-                let contest_ids = [];
-                const relevantContests = await database.getUserContestsForDate(athlete, start_date);
-                for (const row of relevantContests) {
-                    group_ids.push(row.group_id);
-                    contest_ids.push(row.contest_id);
+                if (eventType === "create") {
+                    database.createActivity(activityId, athlete);
                 }
-                await database.relateActivityToContest(athlete, activityId, group_ids, contest_ids);
-            }
 
-            if (event === "delete") {
-                await database.deleteActivity(activityId);
+                if (eventType === "create" || eventType === "update") {
+                    const activity = await strava.activities.get({id: activityId});
+                    const start_date = await database.updateActivity(activityId, activity, true);
+
+                    let group_ids = [];
+                    let contest_ids = [];
+                    const relevantContests = await database.getUserContestsForDate(athlete, start_date);
+
+                    for (const row of relevantContests) {
+                        group_ids.push(row.group_id);
+                        contest_ids.push(row.contest_id);
+                    }
+                    await database.relateActivityToContest(athlete, activityId, group_ids, contest_ids);
+                }
+
+                if (event === "delete") {
+                    await database.deleteActivity(activityId);
+                }
             }
+        } else {
+            console.log("Webhook event from unauthorized client");
         }
     } catch (e) {
         console.error(e);
