@@ -39,7 +39,7 @@ module.exports = function(app) {
         secret: process.env.SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
-        cookie: { secure: false }
+        cookie: { secure: (process.env.SESSION_SECURE_ENABLED == "true") || false }
     }));
 
     app.use(passport.initialize());

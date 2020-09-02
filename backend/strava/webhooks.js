@@ -6,12 +6,12 @@ module.exports.setup = async function (newStravaApi, newDatabase) {
     stravaApi = newStravaApi;
     database = newDatabase;
 
-    if (process.env.STRAVA_WEBHOOKS_ENABLED === true) {
+    if (process.env.STRAVA_WEBHOOKS_ENABLED == "true") {
         const currentWebhooks = await stravaApi.pushsubscriptionchange.list({});
         if (currentWebhooks === undefined || currentWebhooks.length <= 0) {
             console.log("Creating new webhook");
             const newWebhook = await stravaApi.pushsubscriptionchange.create({
-                callback_url: process.env.HOST_NAME + "/strava/webhook",
+                callback_url: process.env.STRAVA_WEBHOOK_HOST + "/strava/webhook",
                 verify_token: process.env.STRAVA_WEBHOOK_VERIFY_TOKEN
             });
             if (newWebhook === undefined || newWebhook.id === undefined) {
