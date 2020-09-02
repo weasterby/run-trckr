@@ -8,10 +8,10 @@ module.exports.setup = async function (newStravaApi, newDatabase) {
     database = newDatabase;
 
     if (process.env.STRAVA_WEBHOOKS_ENABLED == "true") {
-        const currentWebhooks = await stravaApi.pushsubscriptionchange.list({});
+        const currentWebhooks = await stravaApi.pushSubscriptions.list({});
         if (currentWebhooks === undefined || currentWebhooks.length <= 0) {
             console.log("Creating new webhook");
-            const newWebhook = await stravaApi.pushsubscriptionchange.create({
+            const newWebhook = await stravaApi.pushSubscriptions.create({
                 callback_url: process.env.STRAVA_WEBHOOK_HOST + "/strava/webhook",
                 verify_token: process.env.STRAVA_WEBHOOK_VERIFY_TOKEN
             });
