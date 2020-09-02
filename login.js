@@ -26,7 +26,7 @@ module.exports = function(app) {
                 // represent the logged-in user.  In a typical application, you would want
                 // to associate the Strava account with a user record in your database,
                 // and return that user instead.
-                user = await require('./database').createUser(profile);
+                user = await require('./backend/api/database').createUser(profile);
                 console.log(user);
                 return done(null, user);
             });
@@ -39,7 +39,7 @@ module.exports = function(app) {
         secret: process.env.SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
-        cookie: { secure: false }
+        cookie: { secure: (process.env.SESSION_SECURE_ENABLED == "true") || false }
     }));
 
     app.use(passport.initialize());
@@ -52,7 +52,31 @@ module.exports = function(app) {
         passport.authenticate('strava', { failureRedirect: '/login' }),
         function(req, res) {
             // Successful authentication, redirect home.
-            res.redirect('/leaderboard');
+            res.redirect('/login/redirect');
         });
+
+    app.get('/login/redirect', async function (req, res) {
+        console.debug("Redirecting from login");
+        try {
+            const id = req.user.id;
+            if (id !== undefined) {
+                const results = await require('./backend/api/database').getUser(id);
+                if (results.strava_connected === true) {
+                    res.redirect('/leaderboard');
+                } else {
+                    res.redirect('/strava/auth');
+                }
+            } else {
+                res.redirect('/');
+            }
+        } catch (e) {
+            res.redirect('/');
+        }
+    });
+
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
+    })
 
 };

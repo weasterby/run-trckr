@@ -8,8 +8,8 @@ const path = require('path');
 
 app.use(express.static(path.join(__dirname, "/client/build")));
 
-require('./api/login')(app);
-require('./api/router')(app);
+require('./login')(app);
+require('./backend/router')(app);
 require('./client/router')(app);
 
 const PORT = process.env.PORT || 3000;
