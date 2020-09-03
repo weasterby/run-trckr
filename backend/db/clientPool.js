@@ -8,15 +8,16 @@ const { Pool } = require('pg');
 const pools = {
     foreground: new Pool({
         connectionString: process.env.DATABASE_URL,
-        ssl: {rejectUnauthorized: false},
+        ssl: {rejectUnauthorized: (process.env.DATABASE_REJECT_UNAUTHORIZED_SSL == "true") || false},
         max: maxConnections.foreground
     }),
     background: new Pool({
         connectionString: process.env.DATABASE_URL,
-        ssl: {rejectUnauthorized: false},
+        ssl: {rejectUnauthorized: (process.env.DATABASE_REJECT_UNAUTHORIZED_SSL == "true") || false},
         max: maxConnections.background
     })
 };
+
 
 let currentConnections = {
     foreground: 0,
