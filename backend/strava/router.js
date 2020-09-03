@@ -48,7 +48,7 @@ module.exports = function (app) {
 
     app.get('/strava/webhook', function (req, res) {
         // Your verify token. Should be a random string.
-        const VERIFY_TOKEN = "STRAVA";
+        const VERIFY_TOKEN = process.env.STRAVA_WEBHOOK_VERIFY_TOKEN;
         // Parses the query params
         let mode = req.query['hub.mode'];
         let token = req.query['hub.verify_token'];
