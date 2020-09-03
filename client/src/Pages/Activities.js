@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 import Navigation from '../Components/Navigation'
+import Branding from '../Images/powered_by_strava.png'
 import '../Styles/Activities.css'
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -130,6 +131,9 @@ class Activities extends Component {
                         rowClasses= "row-class"
                         rowEvents={ rowEvents }
                     />
+                </div>
+                <div id="branding">
+                    <img src={Branding}/>
                 </div>
             </div>
         )

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navigation from '../Components/Navigation'
 import BootstrapTable from 'react-bootstrap-table-next'
+import Branding from '../Images/powered_by_strava.png'
 import axios from 'axios'
 import '../Styles/Challenges.css'
 
@@ -111,6 +112,9 @@ class Challenges extends Component {
                         data={this.state.challenges}
                         columns={columns}
                     />
+                </div>
+                <div id="branding">
+                    <img src={Branding}/>
                 </div>
             </div>
         )
