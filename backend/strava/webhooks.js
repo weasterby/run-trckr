@@ -1,12 +1,12 @@
 let stravaApi;
 let database;
 const utils = require('./utils');
-let webhookId;
+let webhookId = Number(process.env.STRAVA_WEBHOOK_SUBSCRIPTION_ID);
 
 module.exports.setup = async function (newStravaApi, newDatabase) {
     stravaApi = newStravaApi;
     database = newDatabase;
-
+/*
     if (process.env.STRAVA_WEBHOOKS_ENABLED == "true") {
         const currentWebhooks = await stravaApi.pushSubscriptions.list({});
         if (currentWebhooks === undefined || currentWebhooks.length <= 0) {
@@ -26,6 +26,7 @@ module.exports.setup = async function (newStravaApi, newDatabase) {
         }
         console.debug("Webhook ID:", webhookId);
     }
+*/
 };
 
 module.exports.newEvent = async function (event) {
