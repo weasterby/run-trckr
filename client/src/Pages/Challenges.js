@@ -14,22 +14,22 @@ class Challenges extends Component {
     async componentDidMount() {
         document.body.style.background = "#ffffff"
 
-        // let challenges = await this.getChallenges()
-        // for (let i = 0; i < challenges.length; i++) {
-        //     let start_time_and_date = challenges[i]["start_date"]
-        //     let start_date = start_time_and_date.substring(0, start_time_and_date.indexOf('T'))
-        //     let start_year = start_date.substring(0, 4)
-        //     let start_day_month = start_date.substring(5, start_date.length)
-        //     challenges[i]["start_date"] = start_day_month + "-" + start_year
+        let challenges = await this.getChallenges()
+        for (let i = 0; i < challenges.length; i++) {
+            let start_time_and_date = challenges[i]["start_date"]
+            let start_date = start_time_and_date.substring(0, start_time_and_date.indexOf('T'))
+            let start_year = start_date.substring(0, 4)
+            let start_day_month = start_date.substring(5, start_date.length)
+            challenges[i]["start_date"] = start_day_month + "-" + start_year
 
-        //     let end_time_and_date = challenges[i]["end_date"]
-        //     let end_date = end_time_and_date.substring(0, end_time_and_date.indexOf('T'))
-        //     let end_year = end_date.substring(0, 4)
-        //     let end_day_month = end_date.substring(5, end_date.length)
-        //     challenges[i]["end_date"] = end_day_month + "-" + end_year
-        // }
+            let end_time_and_date = challenges[i]["end_date"]
+            let end_date = end_time_and_date.substring(0, end_time_and_date.indexOf('T'))
+            let end_year = end_date.substring(0, 4)
+            let end_day_month = end_date.substring(5, end_date.length)
+            challenges[i]["end_date"] = end_day_month + "-" + end_year
+        }
 
-        // this.setState({ challenges })
+        this.setState({ challenges })
     }
 
     getChallenges = async() => {
