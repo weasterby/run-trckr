@@ -1,12 +1,3 @@
-#branding img {
-    position: fixed;
-    right: 0px;
-    bottom: 0px;
-    max-height: 30px;
-    background-color: #ececec;
-    border-radius: 4px;
-}
-
 .leaderboard-table {
     margin: 20px;
 }
