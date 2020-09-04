@@ -254,3 +254,61 @@ module.exports.getCurrentContests = async function(group_id, contest_id, timesta
     else
         return {};
 };
+
+module.exports.getGroups = async function(user, params) {
+    const baseQuery = "SELECT contest.*, \"user\".role\n" +
+        "FROM contests as contest\n" +
+        "LEFT JOIN (SELECT * FROM user_contests WHERE \"user\" = $1) AS \"user\"\n" +
+        "ON contest.group_id = \"user\".\"group\" and contest.contest_id = \"user\".contest\n";
+    let fullQuery, queryParams;
+    if(params && params.group && params.contest) {
+        fullQuery = baseQuery + "WHERE contest.group_id = $2 AND contest.contest_id = $3";
+        queryParams = [user, params.group, params.contest];
+    } else {
+        fullQuery = baseQuery + "WHERE contest.privacy_policy = 'Restricted' OR contest.privacy_policy = 'Public' OR \"user\".role IS NOT NULL";
+        queryParams = [user];
+    }
+
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
+    await client.query("BEGIN;");
+    let results;
+    try {
+        results = await client.query(fullQuery, queryParams);
+        await client.query("COMMIT;");
+    }
+    catch (e) {
+        console.error(e);
+        await client.query("ROLLBACK;");
+        throw(e);
+    }
+    finally {
+        foregroundClient.releaseClient();
+    }
+    if (results !== undefined)
+        return results.rows;
+    else
+        return [];
+};
+
+module.exports.addToGroup = async function(user, group, contest) {
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
+    await client.query("BEGIN;");
+    try {
+        await client.query("INSERT INTO user_contests (\"user\", \"group\", contest, active)\n" +
+            "VALUES ($1, $2, $3, true)\n" +
+            "ON CONFLICT (contest, \"group\", \"user\") DO NOTHING", [user, group, contest]);
+        await client.query("COMMIT;");
+    }
+    catch (e) {
+        console.error(e);
+        await client.query("ROLLBACK;");
+        throw(e);
+    }
+    finally {
+        foregroundClient.releaseClient();
+    }
+
+    return null;
+};

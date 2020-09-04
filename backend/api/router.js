@@ -1,6 +1,8 @@
 const database = require("./database");
 const jsonValidator = require("./jsonValidator")();
 const auth = require("./authorization");
+const stravaApi = require("../strava/stravaApi");
+const stravaUtils = require("../strava/utils");
 
 module.exports = function (app) {
 
@@ -52,7 +54,7 @@ module.exports = function (app) {
             const id = req.user.id;
             if (id !== undefined) {
                 const id = req.user.id;
-                console.log("GET /api/user for user ID", id);
+                console.log("GET /api/user/groups for user ID", id);
                 const groups = await database.getUserGroups(id);
                 res.send({success: true, data: groups});
             } else {
@@ -60,6 +62,74 @@ module.exports = function (app) {
                 res.send({success: false, message: "Invalid data"});
             }
         } catch (e) {
+            res.status(500);
+            res.send({success: false, message: "Unknown error"});
+        }
+    });
+
+    app.get("/api/groups", async function (req, res) {
+        try {
+            const id = req.user.id;
+            if (req.query.group || req.query.contest) {
+                if (req.query.group && req.query.contest) {
+                    const groups = await database.getGroups(id, req.query);
+                    res.send({success: true, data: groups});
+                } else {
+                    res.status(400);
+                    res.send({success: false, message: "Must include group id and contest id"});
+                }
+            } else {
+                const groups = await database.getGroups(id, null);
+                res.send({success: true, data: groups});
+            }
+        } catch (e) {
+            res.status(500);
+            res.send({success: false, message: "Unknown error"});
+        }
+    });
+
+    app.put("/api/groups/join", async function (req, res) {
+        try {
+            const id = req.user.id;
+            if (req.body.group && req.body.contest) {
+                const groups = await database.getGroups(id, req.body);
+                if (groups.length > 0) {
+                    if (groups[0].role === null) {
+                        if (groups[0].privacy_policy === "Public") {
+                            await database.addToGroup(id, req.body.group, req.body.contest);
+                            res.send({success: true, message: "User added to group"});
+                        } else {
+                            const accessToken = await stravaUtils.getAuthToken(id, stravaApi);
+                            const strava = new stravaApi.client(accessToken);
+                            const clubs = await strava.athlete.listClubs({});
+                            let inClub = false;
+                            for (const club of clubs) {
+                                if(club.id === groups[0].group_id) {
+                                    inClub = true;
+                                    break;
+                                }
+                            }
+                            if (inClub) {
+                                await database.addToGroup(id, req.body.group, req.body.contest);
+                                res.send({success: true, message: "User added to group"});
+                            } else {
+                                res.status(401);
+                                res.send({success: false, message: "Unauthorized: user must be in Strava club"});
+                            }
+                        }
+                    } else {
+                        res.send({success: true, message: "User already in group"});
+                    }
+                } else {
+                    res.status(400);
+                    res.send({success: false, message: "Contest not found"});
+                }
+            } else {
+                res.status(400);
+                res.send({success: false, message: "Must include group id and contest id"});
+            }
+        } catch (e) {
+            console.error(e);
             res.status(500);
             res.send({success: false, message: "Unknown error"});
         }
