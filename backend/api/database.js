@@ -208,12 +208,12 @@ module.exports.getGroupLeaderBoard = async function(group_id, contest_id) {
     await client.query("BEGIN;");
     let results;
     try {
-        results = await client.query("SELECT \"user\".name, SUM(challenge.points) AS total_points FROM\n" +
+        results = await client.query("SELECT ROW_NUMBER() OVER (ORDER BY total_points DESC, name) AS rank, name, total_points FROM\n" +
+            "(SELECT \"user\".name as name, SUM(challenge.points) AS total_points FROM\n" +
             "user_challenges AS challenge\n" +
             "LEFT JOIN users AS \"user\" ON challenge.\"user\" = \"user\".id\n" +
             "WHERE challenge.\"group\" = $1 AND challenge.contest = $2\n" +
-            "GROUP BY challenge.\"user\", \"user\".name\n" +
-            "ORDER BY total_points DESC;", [group_id, contest_id]);
+            "GROUP BY challenge.\"user\", \"user\".name) AS ranking;", [group_id, contest_id]);
         await client.query("COMMIT;");
     }
     catch (e) {
