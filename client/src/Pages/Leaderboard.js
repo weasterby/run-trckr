@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import Navigation from '../Components/Navigation'
+import Branding from '../Images/powered_by_strava.png'
 import '../Styles/Leaderboard.css'
 
 class Leaderboard extends Component {
@@ -35,6 +36,9 @@ class Leaderboard extends Component {
                         data={[]}
                         columns={columns}
                     />
+                </div>
+                <div id="branding">
+                    <img src={Branding}/>
                 </div>
             </div>
         )
