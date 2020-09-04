@@ -144,7 +144,7 @@ module.exports.getGroupActivities = async function(group_id, contest_id) {
     await client.query("BEGIN;");
     let results;
     try {
-        results = await client.query("SELECT activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
+        results = await client.query("SELECT activity.id, activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
             "activity.distance, activity.distance_mi, activity.distance_km, activity.moving_time, activity.elapsed_time," +
             "activity.average_speed, activity.total_elevation_gain, activity.type, activity.average_pace_standard, \"user\".name AS athlete FROM\n" +
             "contest_activities AS contest\n" +
@@ -176,7 +176,7 @@ module.exports.getMyGroupActivities = async function(group_id, contest_id, user_
     await client.query("BEGIN;");
     let results;
     try {
-        results = await client.query("SELECT activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
+        results = await client.query("SELECT activity.id, activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
             "activity.distance, activity.distance_mi, activity.distance_km, activity.moving_time, activity.elapsed_time," +
             "activity.average_speed, activity.total_elevation_gain, activity.type, activity.average_pace_standard, \"user\".name AS athlete FROM\n" +
             "contest_activities AS contest\n" +
