@@ -1,5 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+a {
+    color: white;
+}
+
+a:hover {
+    color: white;
+}
+
 .color-nav {
     background-color: #BF5700;
     padding-left: 10px;
