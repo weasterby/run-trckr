@@ -1,10 +1,6 @@
 const database = require('./database');
 const utils = require('./utils');
-const stravaApi = require('strava-v3');
-stravaApi.config({
-   "client_id": process.env.STRAVA_CLIENT_ID,
-   "client_secret": process.env.STRAVA_CLIENT_SECRET
-});
+const stravaApi = require('./stravaApi');
 const webhooks = require('./webhooks');
 webhooks.setup(stravaApi, database);
 
@@ -48,7 +44,7 @@ module.exports = function (app) {
 
     app.get('/strava/webhook', function (req, res) {
         // Your verify token. Should be a random string.
-        const VERIFY_TOKEN = "STRAVA";
+        const VERIFY_TOKEN = process.env.STRAVA_WEBHOOK_VERIFY_TOKEN;
         // Parses the query params
         let mode = req.query['hub.mode'];
         let token = req.query['hub.verify_token'];

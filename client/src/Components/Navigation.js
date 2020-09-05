@@ -15,9 +15,9 @@ class Navigation extends Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="ml-auto">
-                    <Nav.Link className="nav-item" href="/leaderboard">Leaderboard</Nav.Link>
-                    <Nav.Link className="nav-item" href="/activities">Activities</Nav.Link>
-                    <Nav.Link className="nav-item" href="/challenges">Challenges</Nav.Link>
+                    <Nav.Link className="nav-item" href="leaderboard">Leaderboard</Nav.Link>
+                    <Nav.Link className="nav-item" href="activities">Activities</Nav.Link>
+                    <Nav.Link className="nav-item" href="challenges">Challenges</Nav.Link>
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>

@@ -109,9 +109,9 @@ module.exports.updateActivity = async function(id, activity, require_update) {
             "updated = CURRENT_TIMESTAMP WHERE id = $26 RETURNING start_date_local;",
             [activity.name, activity.description, activity.distance, activity.moving_time, activity.elapsed_time,
                 activity.total_elevation_gain, activity.elev_high, activity.elev_low, activity.type, activity.start_date,
-                activity.start_date_local, activity.timezone, activity.start_latlng, activity.end_latlng, activity.achievement_count,
-                activity.photo_count, activity.total_photo_count, activity.map, activity.manual, activity.workout_type,
-                activity.average_speed, activity.max_speed, activity.photos, activity.segment_efforts.length, require_update,
+                activity.start_date_local, activity.timezone, JSON.stringify(activity.start_latlng), JSON.stringify(activity.end_latlng), activity.achievement_count,
+                activity.photo_count, activity.total_photo_count, JSON.stringify(activity.map), activity.manual, activity.workout_type,
+                activity.average_speed, activity.max_speed, JSON.stringify(activity.photos), activity.segment_efforts.length, require_update,
             id]);
         await client.query("COMMIT;");
     }

@@ -1,5 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+#branding img {
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+    max-height: 30px;
+    background-color: #ececec;
+    border-radius: 4px;
+}
+
 body {
     font-family: 'Open Sans', serif;
 }
@@ -49,4 +58,5 @@ h6 {
 .button-center {
     text-align: center;
     margin-top: 30px;
+    cursor: pointer;
 }
