@@ -43,9 +43,10 @@ class Activities extends Component {
     getActivities = async() => {
         
         let set = this.state.selectedActivitiesId == 0 ? "all" : "me"
-        
+        const group_id = this.props.match.params.group
+        const contest_id = this.props.match.params.contest
         let results = await axios
-            .get("/api/group/1/1/activities/" + set, {
+            .get("/api/group/"+group_id+"/"+contest_id+"/activities/" + set, {
                 params: {
                 }
             }).catch(error => {
@@ -66,8 +67,9 @@ class Activities extends Component {
     }
     
     formatActivity = (activity) => {
+        activity.distance_standard = (activity.distance / 1609.344).toFixed(2)
         activity.formatted_time = this.formatTime(activity.moving_time)
-        activity.pace = this.formatPace(activity.moving_time, activity.distance_mi)
+        activity.pace = this.formatPace(activity.moving_time, activity.distance_standard)
         activity.start_date_local = this.formatDate(activity.start_date_local)
         return activity
     }
@@ -191,7 +193,7 @@ class Activities extends Component {
                 sort: true,
             },
             {
-                dataField: "distance_mi",
+                dataField: "distance_standard",
                 text: "Distance (mi)",
                 sort: true
             },
@@ -223,8 +225,7 @@ class Activities extends Component {
         const rowEvents = {
           onClick: (e, row, rowIndex) => {
             console.log("clicked" + e)
-            var activityId = 3942096872
-             window.open("https://www.strava.com/activities/" + activityId);
+             window.open("https://www.strava.com/activities/" + row.id);
           }
         };
         

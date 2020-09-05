@@ -21,8 +21,10 @@ class Leaderboard extends Component {
     }
 
     getLeaders = async() => {
+        const group_id = this.props.match.params.group
+        const contest_id = this.props.match.params.contest
         let results = await axios
-            .get("/api/group/1/1/leaderboard", {
+            .get("/api/group/"+group_id+"/"+contest_id+"/leaderboard", {
                 params: {
                 }
             }).catch(error => {

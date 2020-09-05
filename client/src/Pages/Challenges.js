@@ -33,8 +33,10 @@ class Challenges extends Component {
     }
 
     getChallenges = async() => {
+        const group_id = this.props.match.params.group
+        const contest_id = this.props.match.params.contest
         let results = await axios
-            .get("/api/group/1/1/challenges", {
+            .get("/api/group/"+group_id+"/"+contest_id+"/challenges", {
                 params: {
                 }
             }).catch(error => {
