@@ -1,10 +1,6 @@
 const database = require('./database');
 const utils = require('./utils');
-const stravaApi = require('strava-v3');
-stravaApi.config({
-   "client_id": process.env.STRAVA_CLIENT_ID,
-   "client_secret": process.env.STRAVA_CLIENT_SECRET
-});
+const stravaApi = require('./stravaApi');
 const webhooks = require('./webhooks');
 webhooks.setup(stravaApi, database);
 

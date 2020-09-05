@@ -24,9 +24,9 @@ class Navigation extends Component {
                     <NavDropdown.Item onClick={(e) => {this.setState({ contest: 'Texas Triathlon Club Fall 2020 Contest'})}}>Texas Triathlon Club Fall 2020 Contest</NavDropdown.Item>
                   </NavDropdown>
                   <Nav className="ml-auto">
-                    <Nav.Link className="nav-item" href="/leaderboard">Leaderboard</Nav.Link>
-                    <Nav.Link className="nav-item" href="/activities">Activities</Nav.Link>
-                    <Nav.Link className="nav-item" href="/challenges">Challenges</Nav.Link>
+                    <Nav.Link className="nav-item" href="leaderboard">Leaderboard</Nav.Link>
+                    <Nav.Link className="nav-item" href="activities">Activities</Nav.Link>
+                    <Nav.Link className="nav-item" href="challenges">Challenges</Nav.Link>
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>

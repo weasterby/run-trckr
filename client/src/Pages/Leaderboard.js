@@ -2,16 +2,39 @@ import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import Navigation from '../Components/Navigation'
 import Branding from '../Images/powered_by_strava.png'
+import axios from 'axios'
 import '../Styles/Leaderboard.css'
 
 class Leaderboard extends Component {
 
-    componentDidMount() {
-        document.body.style.background = "#ffffff"
+    state = {
+        leaderboard: []
     }
 
-    render() {
+    async componentDidMount() {
+        document.body.style.background = "#ffffff"
 
+        let leaderboard = await this.getLeaders()
+        
+        
+        this.setState({ leaderboard })
+    }
+
+    getLeaders = async() => {
+        const group_id = this.props.match.params.group
+        const contest_id = this.props.match.params.contest
+        let results = await axios
+            .get("/api/group/"+group_id+"/"+contest_id+"/leaderboard", {
+                params: {
+                }
+            }).catch(error => {
+            })
+            
+        return results.data.data
+    }
+    
+    render() {
+        
         const columns = [
             {
                 dataField: "rank",
@@ -22,7 +45,7 @@ class Leaderboard extends Component {
                 text: "Name"
             },
             {
-                dataField: "points",
+                dataField: "total_points",
                 text: "Points"
             }
         ]
@@ -33,7 +56,7 @@ class Leaderboard extends Component {
                 <div class="leaderboard-table">
                     <BootstrapTable
                         keyField='rank'
-                        data={[]}
+                        data={this.state.leaderboard}
                         columns={columns}
                     />
                 </div>

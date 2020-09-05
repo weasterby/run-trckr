@@ -12,9 +12,9 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Route exact path={'/'} component={Welcome} />
-        <Route path={'/leaderboard'} component={Leaderboard} />
-        <Route path={'/activities'} component={Activities} />
-        <Route path={'/challenges'} component={Challenges} />
+        <Route path={'/contest/:group/:contest/leaderboard'} component={Leaderboard} />
+        <Route path={'/contest/:group/:contest/activities'} component={Activities} />
+        <Route path={'/contest/:group/:contest/challenges'} component={Challenges} />
       </BrowserRouter>
     )
   }
