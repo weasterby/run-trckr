@@ -5,6 +5,7 @@ import Welcome from './Pages/Welcome'
 import Leaderboard from './Pages/Leaderboard'
 import Activities from './Pages/Activities'
 import Challenges from './Pages/Challenges'
+import Contest from "./Pages/Contest"
 
 class App extends Component {
 
