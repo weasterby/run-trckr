@@ -12,6 +12,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Route exact path={'/'} component={Welcome} />
+        <Route path={'/contest/:group/:contest/'} component={Contest} />
         <Route path={'/contest/:group/:contest/leaderboard'} component={Leaderboard} />
         <Route path={'/contest/:group/:contest/activities'} component={Activities} />
         <Route path={'/contest/:group/:contest/challenges'} component={Challenges} />

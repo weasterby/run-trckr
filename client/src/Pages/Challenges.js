@@ -106,8 +106,7 @@ class Challenges extends Component {
         ]
 
         return (
-            <div>
-                <Navigation />
+            <>
                 <h1 className="challenges-header">Challenge Rules</h1>
                 <h5 className="challenges-description">To partake in a Run Trckr challenge, join the
                 Strava Group: Texas Runing Club Back to School Fall 2020 Competition and join the Texas
@@ -125,7 +124,7 @@ class Challenges extends Component {
                 <div id="branding">
                     <img src={Branding}/>
                 </div>
-            </div>
+            </>
         )
     }
 }

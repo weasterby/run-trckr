@@ -281,8 +281,7 @@ class Activities extends Component {
         };
         
         return (
-            <div>
-                <Navigation />
+            <>
                 <DropdownButton className="activities-dropdown" title= {activities[this.state.selectedActivitiesId]}>
                     <Dropdown.Item onClick={() => this.changeValue(this.state.selectedActivitiesId)}> {activities[this.state.unselectedActivitiesId]} </Dropdown.Item>
                 </DropdownButton>
@@ -310,7 +309,7 @@ class Activities extends Component {
                 <div id="branding">
                     <img src={Branding}/>
                 </div>
-            </div>
+            </>
         )
     }
 }
