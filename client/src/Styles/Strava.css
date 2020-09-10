@@ -1,0 +1,11 @@
+.strava_link {
+    color: #FC4C02;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.strava_link:hover {
+    color: #FC4C02;
+    text-decoration: underline;
+    cursor: pointer;
+}

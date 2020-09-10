@@ -62,7 +62,7 @@ module.exports = function(app) {
             if (id !== undefined) {
                 const results = await require('./backend/api/database').getUser(id);
                 if (results.strava_connected === true) {
-                    res.redirect('/contest/1/1/leaderboard');
+                    res.redirect('/contests');
                 } else {
                     res.redirect('/strava/auth');
                 }

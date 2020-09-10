@@ -51,8 +51,7 @@ class Leaderboard extends Component {
         ]
         
         return (
-            <div>
-                <Navigation />
+            <>
                 <div class="leaderboard-table">
                     <BootstrapTable
                         keyField='rank'
@@ -63,7 +62,7 @@ class Leaderboard extends Component {
                 <div id="branding">
                     <img src={Branding}/>
                 </div>
-            </div>
+            </>
         )
     }
 }

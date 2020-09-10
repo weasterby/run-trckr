@@ -6,6 +6,7 @@ import Branding from '../Images/powered_by_strava.png'
 import '../Styles/Activities.css'
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
+import "../Styles/Strava.css"
 import { DateRangePicker } from 'react-dates';
 import axios from 'axios'
 import moment from 'moment';
@@ -71,6 +72,7 @@ class Activities extends Component {
         activity.formatted_time = this.formatTime(activity.moving_time)
         activity.pace = this.formatPace(activity.moving_time, activity.distance_standard)
         activity.start_date_local = this.formatDate(activity.start_date_local)
+        activity.total_elevation_gain = (activity.total_elevation_gain * 3.28084).toFixed(2)
         return activity
     }
     
@@ -78,7 +80,7 @@ class Activities extends Component {
       let decimal_pace = (time / 60) / (distance)
       let remainder = decimal_pace % 1
       let minutes = Math.floor(decimal_pace)
-      let seconds = (remainder * 60)
+      let seconds = Math.floor(remainder * 60)
       if (seconds < 10) {
         seconds = "0" + seconds.toFixed(0)
       } else {
@@ -118,7 +120,7 @@ class Activities extends Component {
         return `${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`
     }
     
-     sortDates = (a, b, order) => {
+    sortDates = (a, b, order) => {
         //compares strings in the format YYYY-MM-DD
         let comparison = a.substring(0, a.indexOf('T')).localeCompare(b.substring(0, b.indexOf('T')))
         if (order === 'asc') {
@@ -126,6 +128,48 @@ class Activities extends Component {
         } else {
             return !comparison
         }
+    }
+
+    sortPace = (a, b, order) => {
+        let b_minutes = parseInt(b.split(":")[0])
+        let b_seconds = parseInt(b.split(":")[1].substring(0,2))
+        let a_minutes = parseInt(a.split(":")[0])
+        let a_seconds = parseInt(a.split(":")[1].substring(0,2))
+
+        return order === 'asc' ? (b_minutes - a_minutes || b_seconds - a_seconds) : (a_minutes - b_minutes || a_seconds - b_seconds)
+    }
+
+    sortDuration = (a, b, order) => {
+        var b_hours = 0
+        var b_minutes = 0
+        var b_seconds = 0
+        var a_hours = 0
+        var a_minutes = 0
+        var a_seconds = 0
+
+        if (b.split(":").length === 3) {
+            b_hours = parseInt(b.split(":")[0])
+            b_minutes = parseInt(b.split(":")[1])
+            b_seconds = parseInt(b.split(":")[2])
+        } else {
+            b_minutes = parseInt(b.split(":")[0])
+            b_seconds = parseInt(b.split(":")[1])
+        }
+        if (a.split(":").length === 3) {
+            a_hours = parseInt(a.split(":")[0])
+            a_minutes = parseInt(a.split(":")[1])
+            a_seconds = parseInt(a.split(":")[2])
+        } else {
+            a_minutes = parseInt(a.split(":")[0])
+            a_seconds = parseInt(a.split(":")[1])
+        }
+
+        if (order === 'asc') {
+            return (b_hours - a_hours) || (b_minutes - a_minutes) || (b_seconds - a_seconds)
+        } else {
+            return (a_hours - b_hours) || (a_minutes - b_minutes) || (a_seconds - b_seconds)
+        }
+
     }
      
     filterDates = (activities) => {
@@ -180,40 +224,49 @@ class Activities extends Component {
             {
                 dataField: "athlete",
                 text: "Athlete",
-                sort: true,
+                sort: true
             },
             {
                 dataField: "name",
                 text: "Title",
-                sort: true,
+                classes: "strava_link"
             },
             {
                 dataField: "start_date_local",
                 text: "Date",
-                sort: true,
+                sort: true
             },
             {
                 dataField: "distance_standard",
                 text: "Distance (mi)",
-                sort: true
+                sort: true,
+                sortFunc: (a, b, order) => {
+                    return order === 'asc' ? b - a : a - b
+                }
             },
             {
                 dataField: "formatted_time",
                 text: "Moving Time",
-                sort: true
+                sort: true,
+                sortFunc: (a, b, order) => {
+                    return this.sortDuration(a, b, order)
+                }
             },
             {
                 dataField: "pace",
                 text: "Pace",
                 sort: true,
                 sortFunc: (a, b, order) => {
-                    return this.sortDates(a, b, order)
+                    return this.sortPace(a, b, order)
                 }
             },
             {
                 dataField: "total_elevation_gain",
                 text: "Elevation Gain (ft)",
-                sort: true
+                sort: true,
+                sortFunc: (a, b, order) => {
+                    return order === 'asc' ? b - a : a - b
+                }
             },
             {
                 dataField: "type",
@@ -230,8 +283,7 @@ class Activities extends Component {
         };
         
         return (
-            <div>
-                <Navigation />
+            <>
                 <DropdownButton className="activities-dropdown" title= {activities[this.state.selectedActivitiesId]}>
                     <Dropdown.Item onClick={() => this.changeValue(this.state.selectedActivitiesId)}> {activities[this.state.unselectedActivitiesId]} </Dropdown.Item>
                 </DropdownButton>
@@ -259,7 +311,7 @@ class Activities extends Component {
                 <div id="branding">
                     <img src={Branding}/>
                 </div>
-            </div>
+            </>
         )
     }
 }
