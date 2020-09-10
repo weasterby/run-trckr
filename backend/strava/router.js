@@ -28,7 +28,7 @@ module.exports = function (app) {
                 res.send("Invalid scope, please try again");
                 return;
             }
-            res.redirect('/contest/1/1/leaderboard');
+            res.redirect('/contests');
         } catch (e) {
             res.status(500);
             res.send("Unknown server error, try again later");

@@ -3,6 +3,7 @@ import axios from 'axios'
 import Navigation from "./Navigation";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import "../Styles/Strava.css"
 
 class ContestOverview extends Component {
 
@@ -133,7 +134,7 @@ class ContestOverview extends Component {
                     <Modal.Body>
                         <p>
                             <span>It looks like you haven't joined this contest hosted by </span>
-                            <a href={"https://www.strava.com/clubs/" + this.state.current_contest.group_id} target="_blank" style={{color: '#FC4C02'}}>{this.state.current_contest.group_name}</a>
+                            <a href={"https://www.strava.com/clubs/" + this.state.current_contest.group_id} target="_blank" class="strava_link">{this.state.current_contest.group_name}</a>
                             <span> yet.</span>
                         </p>
                         <p>{joinText}</p>

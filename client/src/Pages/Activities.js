@@ -6,6 +6,7 @@ import Branding from '../Images/powered_by_strava.png'
 import '../Styles/Activities.css'
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
+import "../Styles/Strava.css"
 import { DateRangePicker } from 'react-dates';
 import axios from 'axios'
 import moment from 'moment';
@@ -227,7 +228,8 @@ class Activities extends Component {
             },
             {
                 dataField: "name",
-                text: "Title"
+                text: "Title",
+                classes: "strava_link"
             },
             {
                 dataField: "start_date_local",
