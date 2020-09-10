@@ -2,6 +2,8 @@ const passport = require('passport');
 const StravaStrategy = require('passport-strava-oauth2').Strategy;
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const pgSession = require('connect-pg-simple')(session);
+const clientPools = require('./backend/db/clientPool');
 
 module.exports = function(app) {
 
@@ -39,7 +41,10 @@ module.exports = function(app) {
         secret: process.env.SESSION_SECRET,
         resave: true,
         saveUninitialized: true,
-        cookie: { secure: (process.env.SESSION_SECURE_ENABLED == "true") || false }
+        cookie: { secure: (process.env.SESSION_SECURE_ENABLED == "true") || false },
+        store: new pgSession({
+            pool: clientPools.getPool(false)
+        })
     }));
 
     app.use(passport.initialize());
