@@ -38,7 +38,7 @@ class Navigation extends Component {
         <Navbar collapseOnSelect expand="lg" className="color-nav" variant="dark">
           <Navbar.Brand className="nav-brand" href="/">
             <img src={Logo} className="logo-button" style={{width: 27}} />
-            Run Trckr
+            Run <span className="font-text-trc">TRC</span>KR
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
