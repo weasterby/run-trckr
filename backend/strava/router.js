@@ -36,7 +36,7 @@ module.exports = function (app) {
         try {
             console.log("Saving token");
             const oauth = await stravaApi.oauth.getToken(code);
-            await database.saveAccessToken(oauth);
+            await database.saveAccessToken(oauth, grantedScope);
         } catch (e) {
             console.log(e);
         }

@@ -5,14 +5,16 @@ CREATE TABLE IF NOT EXISTS users (
     created TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW() AT TIME ZONE 'utc') NOT NULL,
     name VARCHAR(120),
     email VARCHAR(120),
+    sex VARCHAR(5),
     age_requirement_met BOOLEAN,
     user_consent BOOLEAN,
+    scope VARCHAR(200),
     token_type VARCHAR(15),
     access_token VARCHAR(50),
     expires_at TIMESTAMPTZ,
     refresh_token VARCHAR(50),
     updated TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW() AT TIME ZONE 'utc'),
-    last_login TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    last_login TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS contests(
@@ -32,7 +34,8 @@ CREATE TABLE IF NOT EXISTS contests(
     PRIMARY KEY (group_id, contest_id),
     FOREIGN KEY (owner) REFERENCES users(id)
         ON UPDATE cascade
-        ON DELETE set null
+        ON DELETE set null,
+    CHECK ( start_date <= end_date )
 );
 
 CREATE TABLE IF NOT EXISTS user_contests(
@@ -63,8 +66,6 @@ CREATE TABLE IF NOT EXISTS activities(
     name TEXT,
     description TEXT,
     distance DOUBLE PRECISION,
-    distance_mi DECIMAL(6, 2),
-    distance_km DECIMAL(8, 3),
     moving_time INT,
     elapsed_time INT,
     total_elevation_gain DECIMAL(7, 2),
@@ -84,10 +85,6 @@ CREATE TABLE IF NOT EXISTS activities(
     workout_type INT,
     average_speed DOUBLE PRECISION,
     max_speed DOUBLE PRECISION,
-    average_pace_standard DECIMAL(7, 4),
-    max_pace_standard DECIMAL(7, 4),
-    average_pace_metric DECIMAL(7, 4),
-    max_pace_metric DECIMAL(7, 4),
     photos JSONB,
     segment_count INT,
     other JSONB,
@@ -120,17 +117,37 @@ CREATE TABLE IF NOT EXISTS contest_activities(
 CREATE INDEX IF NOT EXISTS contest_activities_contest_user_index ON contest_activities(contest, "group", "user");
 CREATE INDEX IF NOT EXISTS contest_activities_activity ON contest_activities(activity);
 
+CREATE TABLE IF NOT EXISTS challenge_templates(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(120),
+    description TEXT,
+    category VARCHAR(30),
+    award_type VARCHAR(30),
+    jsonSchema TEXT,
+    uiSchema TEXT,
+    activityQuery TEXT,
+    userQuery TEXT
+);
+
 CREATE TABLE IF NOT EXISTS challenges(
     id SERIAL PRIMARY KEY,
+    template INT,
     "group" INT NOT NULL,
     contest INT NOT NULL,
     active BOOLEAN NOT NULL,
     name VARCHAR(120) NOT NULL,
     description TEXT,
-    start_date TIMESTAMP NOT NULL,
-    end_date TIMESTAMP NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
     awards JSONB,
-    default_award INT
+    default_award INT,
+    FOREIGN KEY ("group", contest) REFERENCES contests(group_id, contest_id)
+        ON UPDATE cascade
+        ON DELETE cascade,
+    FOREIGN KEY (template) REFERENCES challenge_templates(id)
+        ON UPDATE cascade
+        ON DELETE restrict,
+    CHECK ( start_date <= end_date )
 );
 CREATE INDEX IF NOT EXISTS challenges_contest_index ON challenges(contest, "group");
 

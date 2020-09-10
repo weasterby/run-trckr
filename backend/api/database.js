@@ -6,11 +6,11 @@ module.exports.createUser = async function(profile){
     await client.query("BEGIN;");
     let results;
     try {
-        results = await client.query("INSERT INTO users(id, name, last_login) VALUES ($1, $2, CURRENT_TIMESTAMP)\n" +
+        results = await client.query("INSERT INTO users(id, name, sex, last_login) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)\n" +
             "ON CONFLICT (id) DO UPDATE\n" +
             "SET last_login = (NOW() AT TIME ZONE 'utc')\n" +
             "RETURNING id, name, completed;",
-            [profile.id, profile.displayName]);
+            [profile.id, profile.displayName, profile._json.sex]);
         await client.query("COMMIT;");
     }
     catch (e){
@@ -62,7 +62,7 @@ module.exports.getUser = async function(id) {
     await client.query("BEGIN;");
     let results;
     try {
-        results = await client.query("SELECT id, name, email, created, completed, strava_connected, updated FROM users WHERE id = $1", [id]);
+        results = await client.query("SELECT id, name, email, sex, created, completed, strava_connected, updated FROM users WHERE id = $1", [id]);
         await client.query("COMMIT;");
     }
     catch (e) {
@@ -145,8 +145,8 @@ module.exports.getGroupActivities = async function(group_id, contest_id) {
     let results;
     try {
         results = await client.query("SELECT activity.id, activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
-            "activity.distance, activity.distance_mi, activity.distance_km, activity.moving_time, activity.elapsed_time," +
-            "activity.average_speed, activity.total_elevation_gain, activity.type, activity.average_pace_standard, \"user\".name AS athlete FROM\n" +
+            "activity.distance, activity.moving_time, activity.elapsed_time,\n" +
+            "activity.average_speed, activity.total_elevation_gain, activity.type, \"user\".name AS athlete FROM\n" +
             "contest_activities AS contest\n" +
             "LEFT JOIN activities AS activity\n" +
             "ON contest.activity = activity.id\n" +
@@ -177,8 +177,8 @@ module.exports.getMyGroupActivities = async function(group_id, contest_id, user_
     let results;
     try {
         results = await client.query("SELECT activity.id, activity.name, activity.start_date, activity.start_date_local, activity.timezone, " +
-            "activity.distance, activity.distance_mi, activity.distance_km, activity.moving_time, activity.elapsed_time," +
-            "activity.average_speed, activity.total_elevation_gain, activity.type, activity.average_pace_standard, \"user\".name AS athlete FROM\n" +
+            "activity.distance, activity.moving_time, activity.elapsed_time,\n" +
+            "activity.average_speed, activity.total_elevation_gain, activity.type, \"user\".name AS athlete FROM\n" +
             "contest_activities AS contest\n" +
             "LEFT JOIN activities AS activity\n" +
             "ON contest.activity = activity.id\n" +
@@ -265,7 +265,7 @@ module.exports.getGroups = async function(user, params) {
         fullQuery = baseQuery + "WHERE contest.group_id = $2 AND contest.contest_id = $3";
         queryParams = [user, params.group, params.contest];
     } else {
-        fullQuery = baseQuery + "WHERE contest.privacy_policy = 'Restricted' OR contest.privacy_policy = 'Public' OR \"user\".role IS NOT NULL";
+        fullQuery = baseQuery + "WHERE contest.privacy_policy = 'Restricted' OR contest.privacy_policy = 'Public'";
         queryParams = [user];
     }
 

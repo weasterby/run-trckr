@@ -56,3 +56,10 @@ module.exports.getNewClient = async function(background) {
     }
 };
 
+module.exports.getPool = function (background) {
+    if (background)
+        return pools.background;
+    else
+        return pools.foreground;
+};
+
