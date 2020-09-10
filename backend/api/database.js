@@ -265,7 +265,7 @@ module.exports.getGroups = async function(user, params) {
         fullQuery = baseQuery + "WHERE contest.group_id = $2 AND contest.contest_id = $3";
         queryParams = [user, params.group, params.contest];
     } else {
-        fullQuery = baseQuery + "WHERE contest.privacy_policy = 'Restricted' OR contest.privacy_policy = 'Public' OR \"user\".role IS NOT NULL";
+        fullQuery = baseQuery + "WHERE contest.privacy_policy = 'Restricted' OR contest.privacy_policy = 'Public'";
         queryParams = [user];
     }
 

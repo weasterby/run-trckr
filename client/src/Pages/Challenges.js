@@ -15,19 +15,7 @@ class Challenges extends Component {
         document.body.style.background = "#ffffff"
 
         let challenges = await this.getChallenges()
-        for (let i = 0; i < challenges.length; i++) {
-            let start_time_and_date = challenges[i]["start_date"]
-            let start_date = start_time_and_date.substring(0, start_time_and_date.indexOf('T'))
-            let start_year = start_date.substring(0, 4)
-            let start_day_month = start_date.substring(5, start_date.length)
-            challenges[i]["start_date"] = start_day_month + "-" + start_year
-
-            let end_time_and_date = challenges[i]["end_date"]
-            let end_date = end_time_and_date.substring(0, end_time_and_date.indexOf('T'))
-            let end_year = end_date.substring(0, 4)
-            let end_day_month = end_date.substring(5, end_date.length)
-            challenges[i]["end_date"] = end_day_month + "-" + end_year
-        }
+        challenges = challenges.map(this.formatChallenge);
 
         this.setState({ challenges })
     }
@@ -43,6 +31,18 @@ class Challenges extends Component {
             })
 
         return results.data.data
+    }
+
+    formatChallenge = (challenge) => {
+        challenge.start_date_formatted = this.formatDate(challenge.start_date)
+        challenge.end_date_formatted = this.formatDate(challenge.end_date)
+        return challenge
+    }
+
+    formatDate = (fullDate) => {
+        let date = fullDate.substring(0, fullDate.indexOf('T'))
+        let dateArr = date.split('-')
+        return `${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`
     }
 
     sortDates = (a, b, order) => {
@@ -68,23 +68,17 @@ class Challenges extends Component {
                 hidden: true
             },
             {
-                dataField: "start_date",
+                dataField: "start_date_formatted",
                 text: "Start Date",
                 sort: true,
-                sortFunc: (a, b, order) => {
-                    return this.sortDates(a, b, order)
-                },
                 headerStyle: () => {
                     return { width: "10%" }
                 }
             },
             {
-                dataField: "end_date",
+                dataField: "end_date_formatted",
                 text: "End Date",
                 sort: true,
-                sortFunc: (a, b, order) => {
-                    return this.sortDates(a, b, order)
-                },
                 headerStyle: () => {
                     return { width: "10%" }
                 }
@@ -108,12 +102,11 @@ class Challenges extends Component {
         return (
             <>
                 <h1 className="challenges-header">Challenge Rules</h1>
-                <h5 className="challenges-description">To partake in a Run Trckr challenge, join the
-                Strava Group: Texas Runing Club Back to School Fall 2020 Competition and join the Texas
-                Running Club group on Run Trckr. Then log your workouts on Strava in public mode to get
-                credit. The current challenge or challenges, displayed below, will vary weekly with the
-                start and end date specified. At the end of each challenge, three awards will be given
-                out to the winning Male, winning Female, and winning new member.</h5>
+                <h5 className="challenges-description">
+                    To complete challenges, upload your workout to Strava within 48 hours of the challenge end date.
+                    If your workout meets the challenge's criteria, you will receive points for completing the challenge.
+                    Make sure your workout privacy settings aren't set to "Only You", or it won't be eligible for challenges.
+                </h5>
                 <div class="activities-table">
                     <BootstrapTable
                         keyField='id'
