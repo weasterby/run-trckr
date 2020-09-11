@@ -98,6 +98,7 @@ module.exports = function (app) {
                         if (groups[0].privacy_policy === "Public") {
                             await database.addToGroup(id, req.body.group, req.body.contest);
                             res.send({success: true, message: "User added to group"});
+                            await database.initiateUserInGroup(id, groups[0]);
                         } else {
                             const accessToken = await stravaUtils.getAuthToken(id, stravaApi);
                             const strava = new stravaApi.client(accessToken);
@@ -112,6 +113,7 @@ module.exports = function (app) {
                             if (inClub) {
                                 await database.addToGroup(id, req.body.group, req.body.contest);
                                 res.send({success: true, message: "User added to group"});
+                                await database.initiateUserInGroup(id, groups[0]);
                             } else {
                                 res.status(401);
                                 res.send({success: false, message: "Unauthorized: user must be in Strava club"});
