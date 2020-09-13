@@ -82,15 +82,12 @@ class Contests extends Component {
             },
             {
                 dataField: "name",
-                text: "Contest Name"
+                text: "Contest Name",
+                classes: "strava_link"
             },
             {
                 dataField: "group_name",
-                text: "Strava Club",
-                classes: "strava_link",
-                events: {
-                    onClick: (e, column, columnIndex, row, rowIndex) => {  window.open("https://www.strava.com/clubs/" + row.group_id) }
-                }
+                text: "Strava Club"
             },
             {
                 dataField: "start_date_formatted",
