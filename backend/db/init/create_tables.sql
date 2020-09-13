@@ -29,10 +29,14 @@ CREATE TABLE IF NOT EXISTS contests(
     type VARCHAR(30),
     privacy_policy VARCHAR(30),
     owner INT NOT NULL,
+    join_challenge INT,
     created TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW() AT TIME ZONE 'utc') NOT NULL,
     updated TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW() AT TIME ZONE 'utc'),
     PRIMARY KEY (group_id, contest_id),
     FOREIGN KEY (owner) REFERENCES users(id)
+        ON UPDATE cascade
+        ON DELETE set null,
+    FOREIGN KEY (join_challenge) REFERENCES challenges(id)
         ON UPDATE cascade
         ON DELETE set null,
     CHECK ( start_date <= end_date )
@@ -73,7 +77,7 @@ CREATE TABLE IF NOT EXISTS activities(
     elev_low DECIMAL(6, 2),
     type VARCHAR(30),
     start_date TIMESTAMP,
-    start_date_local TIMESTAMP,
+    start_date_local TIMESTAMP WITHOUT TIME ZONE,
     timezone VARCHAR(200),
     start_latlng JSON,
     end_latlng JSON,

@@ -20,7 +20,6 @@ class Welcome extends Component {
                 <div class="button-center">
                     <img src={StravaButton} onClick={(e) => { window.location.assign("/login")}}></img>
                 </div>
-                <h6 class="link-text">By signing in, you agree to our Privacy Policy</h6>
                 <div id="branding">
                     <img src={Branding}/>
                 </div>

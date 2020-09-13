@@ -312,3 +312,37 @@ module.exports.addToGroup = async function(user, group, contest) {
 
     return null;
 };
+
+module.exports.initiateUserInGroup = async function(user, group) {
+    const foregroundClient = await clientPool.getNewClient(false);
+    const client = foregroundClient.client;
+    await client.query("BEGIN;");
+    try {
+        const activityResult = await client.query("SELECT id FROM activities\n" +
+            "WHERE \"user\" = $1 " +
+            "AND start_date_local > $2 AND start_date_local < $3;", [user, group.start_date, group.end_date]);
+        let activities = [];
+        if (activityResult !== undefined && activityResult.rows !== undefined) {
+            for (const activity of activityResult.rows) {
+                activities.push(activity.id);
+            }
+        }
+        await client.query("INSERT INTO contest_activities(\"group\", contest, \"user\", activity)\n" +
+            "VALUES ($1, $2, $3, UNNEST($4::BIGINT[])) ON CONFLICT (activity, contest, \"group\") DO NOTHING;",
+            [group.group_id, group.contest_id, user, activities]);
+        if (group.join_challenge !== null) {
+            await client.query("INSERT INTO user_challenges(\"group\", contest, \"user\", challenge, award, points)\n" +
+                "VALUES ($1, $2, $3, $4, 0, 0) ON CONFLICT (\"user\", challenge) DO NOTHING;",
+                [group.group_id, group.contest_id, user, group.join_challenge]);
+        }
+        await client.query("COMMIT;");
+    }
+    catch (e) {
+        console.error(e);
+        await client.query("ROLLBACK;");
+    }
+    finally {
+        foregroundClient.releaseClient();
+    }
+
+}
