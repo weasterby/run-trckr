@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/backend/db/init/create_tables.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/backend/db/scripts/update_challenges_table.sql" dialect="PostgreSQL" />
   </component>
 </project>

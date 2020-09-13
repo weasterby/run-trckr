@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS activities(
     elev_low DECIMAL(6, 2),
     type VARCHAR(30),
     start_date TIMESTAMP,
-    start_date_local TIMESTAMP,
+    start_date_local TIMESTAMP WITHOUT TIME ZONE,
     timezone VARCHAR(200),
     start_latlng JSON,
     end_latlng JSON,

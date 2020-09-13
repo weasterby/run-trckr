@@ -6,6 +6,8 @@ const stravaUtils = require("../strava/utils");
 
 module.exports = function (app) {
 
+    require("./admin/router")(app);
+
     app.get("/api/user", async function (req, res) {
         try {
             const id = req.user.id;
