@@ -238,7 +238,7 @@ module.exports.getCurrentContests = async function(group_id, contest_id, timesta
     try {
         results = await client.query("SELECT name, description, start_date, end_date, awards\n" +
             "FROM challenges WHERE \"group\" = $1 AND contest = $2\n" +
-            "AND start_date < $3 AND end_date > $3;", [group_id, contest_id, timestamp]);
+            "AND start_date <= $3 AND end_date >= $3;", [group_id, contest_id, timestamp]);
         await client.query("COMMIT;");
     }
     catch (e) {
