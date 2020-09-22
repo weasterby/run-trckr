@@ -135,12 +135,16 @@ class Activities extends Component {
     }
 
     sortPace = (a, b, order) => {
-        let b_minutes = parseInt(b.split(":")[0])
-        let b_seconds = parseInt(b.split(":")[1].substring(0,2))
-        let a_minutes = parseInt(a.split(":")[0])
-        let a_seconds = parseInt(a.split(":")[1].substring(0,2))
+        if (a !== "N/A" && b !== "N/A") {
+            let b_minutes = parseInt(b.split(":")[0])
+            let b_seconds = parseInt(b.split(":")[1].substring(0, 2))
+            let a_minutes = parseInt(a.split(":")[0])
+            let a_seconds = parseInt(a.split(":")[1].substring(0, 2))
 
-        return order === 'asc' ? (b_minutes - a_minutes || b_seconds - a_seconds) : (a_minutes - b_minutes || a_seconds - b_seconds)
+            return order === 'asc' ? (b_minutes - a_minutes || b_seconds - a_seconds) : (a_minutes - b_minutes || a_seconds - b_seconds)
+        } else {
+            return order === 'asc' ? (b === "N/A" || -1) : (a === "N/A" || -1)
+        }
     }
 
     sortDuration = (a, b, order) => {
