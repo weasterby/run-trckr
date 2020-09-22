@@ -320,7 +320,7 @@ module.exports.initiateUserInGroup = async function(user, group) {
     try {
         const activityResult = await client.query("SELECT id FROM activities\n" +
             "WHERE \"user\" = $1 " +
-            "AND start_date_local > $2 AND start_date_local < $3;", [user, group.start_date, group.end_date]);
+            "AND start_date_local >= $2 AND start_date_local <= $3;", [user, group.start_date, group.end_date]);
         let activities = [];
         if (activityResult !== undefined && activityResult.rows !== undefined) {
             for (const activity of activityResult.rows) {
