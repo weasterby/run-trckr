@@ -158,7 +158,7 @@ module.exports.getUserContestsForDate = async function(id, date) {
     try {
         results = await client.query("SELECT contests.group_id, contests.contest_id FROM user_contests\n" +
             "LEFT JOIN contests on user_contests.\"group\" = contests.group_id and user_contests.contest = contests.contest_id\n" +
-            "WHERE user_contests.\"user\" = $1 AND contests.start_date < $2 AND contests.end_date > $2;",
+            "WHERE user_contests.\"user\" = $1 AND contests.start_date <= $2 AND contests.end_date >= $2;",
             [id, date]);
         await client.query("COMMIT;");
     }

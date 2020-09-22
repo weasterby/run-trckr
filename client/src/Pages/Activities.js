@@ -76,18 +76,22 @@ class Activities extends Component {
         return activity
     }
     
-    formatPace(time, distance) {    
-      let decimal_pace = (time / 60) / (distance)
-      let remainder = decimal_pace % 1
-      let minutes = Math.floor(decimal_pace)
-      let seconds = Math.floor(remainder * 60)
-      if (seconds < 10) {
-        seconds = "0" + seconds.toFixed(0)
-      } else {
-        seconds = seconds.toFixed(0)
-      }
-      let result = minutes + ":" + seconds + " /mi"
-      return result
+    formatPace(time, distance) {
+        if (distance > 0) {
+            let decimal_pace = (time / 60) / (distance)
+            let remainder = decimal_pace % 1
+            let minutes = Math.floor(decimal_pace)
+            let seconds = Math.floor(remainder * 60)
+            if (seconds < 10) {
+              seconds = "0" + seconds.toFixed(0)
+            } else {
+              seconds = seconds.toFixed(0)
+            }
+            let result = minutes + ":" + seconds + " /mi"
+            return result
+        } else {
+            return "N/A"
+        }
     }
 
     formatTime = (secs) => {

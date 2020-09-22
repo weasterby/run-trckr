@@ -41,8 +41,8 @@ module.exports.newEvent = async function (event) {
                 const activityId = event.object_id;
                 const eventType = event.aspect_type;
 
-                if (eventType === "create") {
-                    database.createActivity(activityId, athlete);
+                if (eventType === "create" || eventType === "update") {
+                    await database.createActivity(activityId, athlete);
                 }
 
                 if (eventType === "create" || eventType === "update") {
